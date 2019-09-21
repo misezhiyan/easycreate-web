@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.FieldMapper">
+
+	<!-- 添加表字段 -->
+	<insert id="addFields" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+	INSERT INTO field(
+		field_name,
+		field_comment,
+		field_bz,
+		field_type,
+		field_length,
+		create_by,
+		create_date,
+		update_by,
+		update_date
+	) VALUES
+	<foreach collection="list" item="item" separator=",">
+	(	#{item.fieldName},
+		#{item.fieldComment},
+		#{item.fieldBz},
+		#{item.fieldType},
+		#{item.fieldLength},
+		#{item.createBy},
+		now(),
+		#{item.updateBy},
+		now()
+	)
+	</foreach>
+	</insert>
+	
+	<!-- 获取项目业务字段 START -->
+	<select id="programFieldList" resultType="com.kimmy.easycreate.po.Field">
+	SELECT
+		*
+	FROM
+		program_field_relation r
+	LEFT JOIN field f ON r.field_id = f.id
+	WHERE 1=1
+		AND program_id = #{programid}
+	</select>
+	<!-- 获取项目业务字段 END -->
+	<!-- 全部业务字段 START -->
+	<select id="allFieldList" resultType="com.kimmy.easycreate.etity.result.FieldResult">
+	SELECT
+		f.*, tfr.table_id,
+		ptf.program_id
+	FROM
+		field f
+	LEFT JOIN table_field_relation tfr ON f.id = tfr.field_id
+	LEFT JOIN program_table_relation ptf ON tfr.table_id = ptf.table_id
+	</select>
+	<!-- 全部业务字段 END -->
+
+</mapper>

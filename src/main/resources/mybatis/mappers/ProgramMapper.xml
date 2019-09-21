@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.ProgramMapper">
+
+	<!-- 项目列表 -->
+	<select id="programList" resultType="com.kimmy.easycreate.po.Program">
+		select * from program
+	</select>
+	
+	<!-- 创建 -->
+	<insert id="createProgram" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO program (program_name) VALUES (#{program.programName})
+	</insert>
+
+	<!-- 添加项目字段关系 -->
+	<insert id="addProgramFields" parameterType="com.kimmy.easycreate.etity.query.ProgramFieldsQuery">
+	INSERT INTO program_field_relation (
+		program_id,
+		field_id
+		<!-- 
+		,is_business
+		 -->
+	)
+	VALUES
+	<foreach collection="fieldList" item="field" separator=",">
+		(#{programId}, #{field.id}  <!-- , #{field.id} -->)
+	</foreach>
+	</insert>
+
+</mapper>

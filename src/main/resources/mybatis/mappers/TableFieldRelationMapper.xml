@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.TableFieldRelationMapper">
+
+	<!-- 添加表结构 -->
+	<insert id="addTFRelationOneTable" parameterType="com.kimmy.easycreate.po.Table">
+	INSERT INTO table_field_relation (
+		table_id,
+		field_id,
+		create_by,
+		create_date,
+		update_by,
+		update_date
+	)
+	VALUES
+	<foreach collection="fieldList" item="item" separator=",">
+		(#{id}, #{item.id}, #{item.createBy}, now(), #{item.updateBy}, NOW())
+	</foreach>
+	</insert>
+
+</mapper>

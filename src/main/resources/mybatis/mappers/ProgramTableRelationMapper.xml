@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.ProgramTableRelationMapper">
+
+	<!-- 添加项目与表对应关系 -->
+	<insert id="addPTRelationOneTable">
+	INSERT INTO program_table_relation (
+		program_id,
+		table_id,
+		create_by,
+		create_date,
+		update_by,
+		update_date
+	)
+	VALUES
+		(#{programid}, #{table.id}, #{table.createBy}, now(), #{table.updateBy}, NOW())
+	</insert>
+
+</mapper>

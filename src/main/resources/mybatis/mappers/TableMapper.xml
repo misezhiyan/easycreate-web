@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.TableMapper">
+
+	<!-- 添加表 -->
+	<insert id="addTable" parameterType="com.kimmy.easycreate.po.Table" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO `table` (
+			table_name,
+			table_comment,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		)
+		VALUES
+			(
+				#{tableName},
+				#{tableComment},
+				#{createBy},
+				#{createDate},
+				#{updateBy},
+				#{updateDate})
+	</insert>
+
+	<!-- 按表字段展示 START -->
+	<resultMap id="tableResult" type="com.kimmy.easycreate.etity.result.TableResult">
+		<result column="program_id" property="programId"/>
+		<result column="program_name" property="programId"/>
+		<result column="id" property="id"/>
+		<result column="table_name" property="tableName"/>
+		<result column="table_comment" property="tableComment"/>
+		<collection column="id" property="fieldList" ofType="com.kimmy.easycreate.po.Field" select="fieldsByTable_fields"> 
+			<id column="table_id" property="tableId"/>
+			<result column="name" property="name"/>
+		</collection>
+	</resultMap>
+	<select id="fieldsByTable" resultMap="tableResult">
+	SELECT
+		p.program_id,
+		p.program_name,
+		t.id,
+		t.table_name,
+		t.table_comment
+	FROM
+		`table` t
+	LEFT JOIN program_table_relation ptr ON t.id = ptr.table_id
+	LEFT JOIN program p ON p.id = ptr.program_id
+	</select>
+	<select id="fieldsByTable_fields" resultType="com.kimmy.easycreate.po.Field">
+	SELECT
+		f.*
+	FROM
+		table_field_relation tfr
+	LEFT JOIN field f ON f.id = tfr.field_id
+	WHERE
+		tfr.table_id = #{id}
+	</select>
+	<!-- 
+	<select id="fieldsByTable" resultType="com.kimmy.easycreate.etity.result.TableResult">
+	SELECT
+		*
+	FROM
+		`table` t
+	LEFT JOIN table_field_relation tfr ON t.id = tfr.table_id
+	LEFT JOIN field f ON f.id = tfr.field_id
+	LEFT JOIN program_table_relation ptr ON t.id = ptr.table_id
+	</select>
+	 -->
+	<!-- 按表字段展示 END -->
+	
+	<!-- 查看已存在字段 START -->
+	<select id="hasExist" resultType="com.kimmy.easycreate.po.ProgramFieldRelation">
+	SELECT FIELD_ID
+	FROM PROGRAM_FIELD_RELATION
+	WHERE PROGRAM_ID = #{programid}
+		AND FIELD_ID IN (
+			<foreach collection="fieldList" item="field" separator=",">
+				#{field.fieldId}
+			</foreach>
+		)
+	</select>
+	<!-- 查看已存在字段 END -->
+	
+	<!-- 引入选中字段 START -->
+	<insert id="importChoosed">
+	INSERT INTO PROGRAM_FIELD_RELATION (program_id, field_id)
+	VALUES
+		<foreach collection="fieldList" item="field" separator=",">
+		(#{programid}, #{field.fieldId})
+		</foreach>
+	</insert>
+	<!-- 引入选中字段 END -->
+
+</mapper>
