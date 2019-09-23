@@ -1,0 +1,9 @@
+CREATE TABLE `program_table_relation` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `program_id` int(11) DEFAULT NULL COMMENT '项目名ID',
+  `table_id` int(11) DEFAULT NULL COMMENT '表名ID',
+  `create_by` int(11) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1

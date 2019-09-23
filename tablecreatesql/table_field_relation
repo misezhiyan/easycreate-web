@@ -1,0 +1,10 @@
+CREATE TABLE `table_field_relation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `table_id` int(11) DEFAULT NULL COMMENT '表名ID',
+  `field_id` int(11) DEFAULT NULL COMMENT '字段名ID',
+  `create_by` int(11) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1

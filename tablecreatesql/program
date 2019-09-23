@@ -1,0 +1,9 @@
+CREATE TABLE `program` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `program_id` varchar(43) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '项目业务ID',
+  `program_name` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '项目名称',
+  `belong_to` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '所属人',
+  `create_by` int(11) DEFAULT NULL COMMENT '创建人',
+  `creat_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1

@@ -1,0 +1,7 @@
+CREATE TABLE `program_field_relation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `program_id` int(11) DEFAULT NULL COMMENT '项目ID',
+  `field_id` int(11) DEFAULT NULL,
+  `is_business` int(1) DEFAULT NULL COMMENT '是否业务字段  0:否  1:是',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1

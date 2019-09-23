@@ -1,0 +1,10 @@
+CREATE TABLE `table` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `table_name` varchar(100) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '表名',
+  `table_comment` varchar(200) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '表注释',
+  `create_by` int(11) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1
