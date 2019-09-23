@@ -32,7 +32,8 @@
 	<!-- 获取项目业务字段 START -->
 	<select id="programFieldList" resultType="com.kimmy.easycreate.po.Field">
 	SELECT
-		*
+		r.program_id,
+		f.*
 	FROM
 		program_field_relation r
 	LEFT JOIN field f ON r.field_id = f.id

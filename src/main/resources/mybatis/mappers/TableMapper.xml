@@ -90,5 +90,26 @@
 		</foreach>
 	</insert>
 	<!-- 引入选中字段 END -->
+	
+	<!-- 项目表结构 START -->
+	<resultMap type="com.kimmy.easycreate.etity.result.TableResult" id="resultMap_programTables">
+		<result column="id" property="id"/>
+		<result column="table_name" property="tableName"/>
+		<result column="table_comment" property="tableComment"/>
+		<collection column="id" property="fieldList" ofType="com.kimmy.easycreate.po.Field" select="fieldsByTable_fields"> 
+			<id column="table_id" property="id"/>
+			<result column="name" property="name"/>
+		</collection>
+	</resultMap>
+	<select id="programTables" resultMap="resultMap_programTables">
+	SELECT
+		t.*
+	FROM
+		program_table_relation ptr
+	LEFT JOIN `table` t ON ptr.table_id = t.id
+	WHERE
+		ptr.program_id = #{programid}
+	</select>
+	<!-- 项目表结构 END -->
 
 </mapper>

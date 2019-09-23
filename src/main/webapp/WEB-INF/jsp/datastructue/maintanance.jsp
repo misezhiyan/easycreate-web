@@ -4,18 +4,23 @@
 <head>
 <meta charset="UTF-8">
 <title>DATAMAINTAIN PAGE</title>
+<jsp:include page="../base/base.jsp" />
 <script type="text/javascript" src="/static/js/jquery.3.3.1.min.js"></script>
 <script type="text/javascript">
+	//var programid = ${programid};
 	var programid = ${programid};
 </script>
 </head>
 <body>
 	项目编码:${programid}
+	<!-- 
 	<div id="databaseDiv" style="position: fix; width: 300px; height: 50px; background-color: red">
 		使用库 <select style="width: 200px"></select> <br> +
 		<input type="button" value="添加库配置">
 		<div></div>
 	</div>
+ 	-->
+
 	<br> 表结构列表:
 	<div id="tableListDiv"></div>
 
@@ -54,6 +59,100 @@
 	</div>
 </body>
 
+<!-- 表结构展示 -->
+<script type="text/javascript">
+	function programTables() {
+		$.post(webRoot + '/datastructure/programTables', {
+			programid : programid
+		}, function(data) {
+			var code = data.code;
+			if (200 != code) {
+				var message = data.message;
+				alert(message);
+				return;
+			}
+
+			var tableNodeList = $('#tableListDiv');
+			var tableList = data.result;
+			for (var i = 0; i < tableList.length; i++) {
+
+				var table = tableList[i];
+				var tableid = table.id;
+				var tableName = table.tableName;
+
+				var tableNode = document.createElement("table");
+
+				var theadNode = document.createElement("thead");
+				var theadTrNode = document.createElement("tr");
+				var theadTdNode = document.createElement("td");
+				$(theadTdNode).attr('colspan', 7);
+				$(theadTdNode).append('表ID:' + tableid + ', 表名:' + tableName);
+				$(theadTrNode).append($(theadTdNode));
+				$(theadNode).append($(theadTrNode));
+				$(tableNode).append($(theadNode));
+				
+
+				var fieldList = table.fieldList;
+				for (var j = 0; j < fieldList.length; j++) {
+
+					var trNode = document.createElement("tr");
+
+					var field = fieldList[j];
+
+					var fieldid = field.id;
+					var fieldName = field.fieldName;
+					var fieldComment = field.fieldComment;
+					var fieldType = field.fieldType;
+					var fieldLength = field.fieldLength;
+					var lengthAfterPoint = field.lengthAfterPoint;
+					var createDate = field.createDate;
+					var updateDate = field.updateDate;
+
+					var fieldidTdNode = document.createElement("td");
+					var fieldNameTdNode = document.createElement("td");
+					var fieldCommentTdNode = document.createElement("td");
+					var fieldTypeTdNode = document.createElement("td");
+					var fieldLengthTdNode = document.createElement("td");
+					var lengthAfterPointTdNode = document.createElement("td");
+					var createDateTdNode = document.createElement("td");
+					var updateDateTdNode = document.createElement("td");
+
+					var fieldidNode = document.createElement("input");
+					$(fieldidNode).attr('type', 'checkbox');
+					var fieldNameNode = document.createElement("input");
+					var fieldCommentNode = document.createElement("input");
+					var fieldTypeNode = document.createElement("input");
+					var fieldLengthNode = document.createElement("input");
+					var lengthAfterPointNode = document.createElement("input");
+					var createDateNode = document.createElement("input");
+					var updateDateNode = document.createElement("input");
+
+					$(fieldidNode).attr('fieldid', fieldid);
+					$(fieldNameNode).val(fieldName);
+					$(fieldCommentNode).val(fieldComment);
+					$(fieldTypeNode).val(fieldType);
+					$(fieldLengthNode).val(fieldLength);
+					$(lengthAfterPointNode).val(lengthAfterPoint);
+					$(createDateNode).val(createDate);
+					$(updateDateNode).val(updateDate);
+
+					$(trNode).append($(fieldidNode));
+					$(trNode).append($(fieldNameNode));
+					$(trNode).append($(fieldCommentNode));
+					$(trNode).append($(fieldTypeNode));
+					$(trNode).append($(fieldLengthNode));
+					$(trNode).append($(lengthAfterPointNode));
+					$(trNode).append($(createDateNode));
+					$(trNode).append($(updateDateNode));
+
+					$(tableNode).append($(trNode));
+				}
+
+				$(tableNodeList).append($(tableNode));
+			}
+		}, 'json')
+	}
+</script>
 <script type="text/javascript">
 	//添加数据结构
 	function submitTableAdd() {
@@ -146,5 +245,11 @@
 	function addFieldStructure(addFieldButton) {
 		$(addFieldButton).parent().find('[name=fieldDiv]').append(fieldCreateMudle);
 	}
+</script>
+<script type="text/javascript">
+	$(function() {
+		//展示项目表列表
+		programTables();
+	})
 </script>
 </html>

@@ -24,4 +24,7 @@ public interface TableMapper {
 	// 引入选中字段
 	int importChoosed(@Param("programid") String programid, @Param("fieldList") List<ProgramFieldRelation> unExistFieldList);
 
+	// 项目表结构
+	List<TableResult> programTables(@Param("programid") String programid);
+
 }

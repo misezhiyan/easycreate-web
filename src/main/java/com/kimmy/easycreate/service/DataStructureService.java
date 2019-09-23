@@ -32,4 +32,7 @@ public interface DataStructureService {
 	// 引入选中字段
 	void importChoosed(String programid, List<ProgramFieldRelation> fieldList);
 
+	// 项目表结构
+	List<TableResult> programTables(String programid);
+
 }

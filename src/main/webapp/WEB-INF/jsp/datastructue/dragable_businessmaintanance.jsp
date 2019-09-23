@@ -103,7 +103,7 @@
 	function importChoosed() {
 		var showType = $('.showTypeHeadChoosed').attr('showType');
 		var fieldList = extractFieldFrom(showType);
-
+		
 		$.post(webRoot + '/datastructure/importChoosed', {
 			programid : programid,
 			fieldList : JSON.stringify(fieldList)
@@ -116,12 +116,12 @@
 			}
 
 			refreshProgramFields();
-			
+
 			cleanFieldsByTable();
 			cleanAllFieldList();
 			$('.showTypeHead').removeClass('showTypeHeadChoosed');
 			$('[showType=thisParam]').click();
-		},'json')
+		}, 'json')
 	}
 	function extractFieldFrom(showType) {
 
@@ -145,7 +145,22 @@
 			})
 		}
 		if ('fieldsByTable' == showType) {
-			alert(2);
+
+			var fieldList = [];
+			
+			$('#tableList').find('[name=oneTable]').find('table').find('tbody').each(function() {
+				$(this).find('tr').each(function(){
+
+					var field = {};
+					
+					var fieldidNode = $(this).find('[name=fieldid]')
+					var fieldid = $(fieldidNode).attr('fieldid');
+
+					field.fieldid = fieldid;
+					
+					fieldList.push(field);
+				})
+			});
 		}
 
 		return fieldList;

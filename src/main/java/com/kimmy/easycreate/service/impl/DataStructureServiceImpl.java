@@ -117,4 +117,13 @@ public class DataStructureServiceImpl implements DataStructureService {
 		}
 	}
 
+	// 项目表结构
+	@Override
+	public List<TableResult> programTables(String programid) {
+
+		List<TableResult> programTables = tableMapper.programTables(programid);
+
+		return programTables;
+	}
+
 }

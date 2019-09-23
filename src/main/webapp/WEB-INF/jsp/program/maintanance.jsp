@@ -16,7 +16,7 @@
 	<br>
 	<input type="button" onclick="businessDataStructureMaintanance()" value="业务数据维护">
 	<br>
-	<input type="button" onclick="dataStructureMaitanance()" value="数据表结构维护">
+	<input type="button" onclick="dataStructureMaitanance()" value="表结构维护">
 	<br>
 	<input type="button" onclick="pageMaintanance()" value="页面维护">
 	<br>
@@ -32,7 +32,7 @@
 	// 数据表结构维护
 	function dataStructureMaitanance() {
 		var dataStructureMaitananceUrl = webRoot + '/datastructure/maintanancePage?programid=' + programid;
-		window.open(dataStructureMaiintananceUrl);
+		window.open(dataStructureMaitananceUrl);
 	}
 </script>
 </html>

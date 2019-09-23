@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<div id="floatDiv" style="width: 300px; height: 200px; background: #AAAAAA">
+<div id="floatDiv" style="width: 300px; height: 200px; background: #AAAAAA; display: none">
 	<div style="float: right; width: 100%; background: #AA00AA">
 		<div style="float: right;">
 			<input type="button" value="X" onclick="closeFloatDiv()">

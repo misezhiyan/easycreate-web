@@ -103,6 +103,18 @@ public class DataStructureController extends BaseController {
 		return new ModelAndView("/datastructue/maintanance");
 	}
 
+	// 项目表结构
+	@RequestMapping(value = "/programTables")
+	public void programTables(HttpServletRequest request, HttpServletResponse response) throws InstantiationException, IllegalAccessException {
+
+		String programid = request.getParameter("programid");
+		List<TableResult> programTables = dataStructureService.programTables(programid);
+
+		responseJson_ok(response, programTables);
+		// responseJson_err(response, "添加失败");
+
+	}
+
 	// 添加数据结构
 	@RequestMapping(value = "/addDataStructure")
 	public void addDataStructure(HttpServletRequest request, HttpServletResponse response) throws InstantiationException, IllegalAccessException {

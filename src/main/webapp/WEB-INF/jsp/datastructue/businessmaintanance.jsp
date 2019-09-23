@@ -109,7 +109,7 @@
 					<tr>
 						<td nowrap><input type="checkbox" name="fieldid"></td>
 						<td><input name="fieldName" type="text" disabled="true"></td>
-						<td><input name="fieldComment" type="text" disabled="true"><input name="fieldBz" type="text" hidden="true" value="${field.fieldBz }" disabled="true"></td>
+						<td><input name="fieldComment" type="text" disabled="true"> <input name="fieldBz" type="text" hidden="true" value="${field.fieldBz }" disabled="true"></td>
 						<td><input name="fieldType" type="text" disabled="true"></td>
 						<td><input name="fieldLength" type="text" disabled="true"></td>
 						<td><input name="lengthAfterPoint" type="text" disabled="true"></td>
@@ -124,6 +124,18 @@
 	</div>
 	<jsp:include page="float_businessmaintanance.jsp" />
 </body>
+<script type="text/javascript">
+	function HotKey() {
+		var a = window.event.keyCode;
+		if (a == 119) {
+			var isVisible = $('#dragableDiv').is(':visible');
+			if (!isVisible)
+				$('#dragableDiv').show();
+			else
+				$('#dragableDiv').hide();
+		}
+	}
+</script>
 <script type="text/javascript">
 	$(function() {
 		refreshProgramFields();
@@ -148,9 +160,9 @@
 				var field = fieldList[i];
 				var programFieldsNode = $(programFieldsModel);
 				programFieldsNode.removeAttr('id');
-
+				
 				var fieldidNode = $(programFieldsNode).find('[name=fieldid]');
-				fieldidNode.parent().append(i+1);
+				fieldidNode.parent().append(i + 1);
 				fieldidNode.attr('fieldid', field.id);
 				$(programFieldsNode).find('[name=fieldName]').val(field.fieldName);
 				$(programFieldsNode).find('[name=fieldComment]').val(field.fieldComment);
@@ -176,7 +188,7 @@
 		$('#addFieldsArea').append(addFieldModelNode);
 	}
 	// 保存添加
-	function saveAddFields() { 
+	function saveAddFields() {
 		var fieldList = '[';
 		var fieldNodeArr = $('#addFieldsArea').find('[name=field]');
 		for (var i = 0; i < fieldNodeArr.length; i++) {
@@ -226,6 +238,8 @@
 		floatWindowInit();
 		//启动可拖拽
 		dragableInit();
+		//启用快捷键
+		document.onkeydown = HotKey;
 	}
 </script>
 </html>
