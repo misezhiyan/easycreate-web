@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.BusinessLineMapper">
+
+	<!-- 项目业务线列表 -->
+	<select id="businesslineListByProgramId" resultType="com.kimmy.easycreate.po.BusinessLine">
+	SELECT
+		l.*
+	FROM
+		business_line l,
+		program_Line_Relation r
+	WHERE l.id = r.business_line_id
+		AND R.program_id = #{programid}
+	</select>
+
+	<!-- 创建业务线 -->
+	<insert id="businesslineCreate" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+	INSERT INTO business_line(
+		business_line_name,
+		business_line_type,
+		page_id,
+		interface_id,
+		create_by,
+		create_date
+	)
+	VALUES
+		(
+			#{businessline.businessLineName},
+			#{businessline.businessLineType},
+			#{businessline.pageId},
+			#{businessline.interfaceId},
+			#{businessline.createBy},
+			NOW()
+		)
+	</insert>
+	
+</mapper>

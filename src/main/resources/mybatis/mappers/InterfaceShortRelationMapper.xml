@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.InterfaceShortRelationMapper">
+
+	<!-- 接口列表 -->
+	<select id="interfaceListBySnapshortid" resultType="com.kimmy.easycreate.po.Interface">
+		SELECT
+			f.*
+		FROM
+			interface_short_relation r
+		JOIN interface f ON r.interface_id = f.id
+		WHERE
+			snap_short_id = #{query.snapShortId}
+	</select>
+
+</mapper>

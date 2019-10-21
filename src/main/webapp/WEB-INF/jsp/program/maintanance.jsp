@@ -18,9 +18,7 @@
 	<br>
 	<input type="button" onclick="dataStructureMaitanance()" value="表结构维护">
 	<br>
-	<input type="button" onclick="pageMaintanance()" value="页面维护">
-	<br>
-	<input type="button" onclick="logicMaintanance()" value="逻辑维护">
+	<input type="button" onclick="businessLineMaintanance()" value="业务线逻辑维护">
 	<br>
 </body>
 <script type="text/javascript">
@@ -33,6 +31,11 @@
 	function dataStructureMaitanance() {
 		var dataStructureMaitananceUrl = webRoot + '/datastructure/maintanancePage?programid=' + programid;
 		window.open(dataStructureMaitananceUrl);
+	}
+	// 业务线逻辑维护
+	function businessLineMaintanance() {
+		var businessLineMaintananceUrl = webRoot + '/businessline/maintanancePage?programid=' + programid;
+		window.open(businessLineMaintananceUrl);
 	}
 </script>
 </html>

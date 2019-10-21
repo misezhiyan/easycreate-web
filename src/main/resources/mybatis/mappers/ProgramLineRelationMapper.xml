@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.ProgramLineRelationMapper">
+
+
+	<!-- 项目业务线关系 -->
+	<insert id="programLineRelationCreate">
+	INSERT INTO program_Line_Relation (
+		business_line_id,
+		program_id,
+		create_by,
+		create_date
+	)
+	VALUES
+		(
+			#{programLineRelation.businessLineId},
+			#{programLineRelation.programId},
+			#{programLineRelation.createBy},
+			NOW()
+		)
+	</insert>
+
+</mapper>

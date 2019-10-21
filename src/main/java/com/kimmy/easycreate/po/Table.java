@@ -1,8 +1,11 @@
 package com.kimmy.easycreate.po;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.kimmy.easycreate.etity.result.TableFieldRelationWithField;
 
 import lombok.Data;
 
@@ -28,7 +31,15 @@ public class Table implements Serializable {
 	// 更新时间
 	private Date updateDate;
 
-	// 更新时间
+	// 主键自增
+	private String autoIncri;
+	// 序列名称
+	private String sequence;
+
+	// 字段关系表
+	private List<TableFieldRelationWithField> tfrList;
+
+	// 字段列表
 	private List<Field> fieldList;
 
 	public Integer getId() {
@@ -87,12 +98,44 @@ public class Table implements Serializable {
 		this.updateDate = updateDate;
 	}
 
+	public String getAutoIncri() {
+		return autoIncri;
+	}
+
+	public void setAutoIncri(String autoIncri) {
+		this.autoIncri = autoIncri;
+	}
+
+	public String getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
+	}
+
+	public List<TableFieldRelationWithField> getTfrList() {
+		return tfrList;
+	}
+
+	public void setTfrList(List<TableFieldRelationWithField> tfrList) {
+		this.tfrList = tfrList;
+	}
+
 	public List<Field> getFieldList() {
 		return fieldList;
 	}
 
 	public void setFieldList(List<Field> fieldList) {
 		this.fieldList = fieldList;
+	}
+
+	/***************************** business method *****************************/
+
+	public void addTfr(TableFieldRelationWithField field) {
+		if (null == tfrList)
+			tfrList = new ArrayList<TableFieldRelationWithField>();
+		tfrList.add(field);
 	}
 
 }

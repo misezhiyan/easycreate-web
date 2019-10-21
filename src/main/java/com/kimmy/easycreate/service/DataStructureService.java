@@ -35,4 +35,10 @@ public interface DataStructureService {
 	// 项目表结构
 	List<TableResult> programTables(String programid);
 
+	// 添加表, 字段
+	void addDataStructureByExcel(String programid, List<Table> tableList);
+
+	// 删除表
+	void deleteTable(Integer programid, Integer tableid);
+
 }

@@ -1,5 +1,10 @@
 package com.kimmy.easycreate.controller;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
@@ -22,6 +30,7 @@ import com.kimmy.easycreate.po.Field;
 import com.kimmy.easycreate.po.ProgramFieldRelation;
 import com.kimmy.easycreate.po.Table;
 import com.kimmy.easycreate.service.DataStructureService;
+import com.kimmy.easycreate.util.ExcelUtil;
 
 @RestController
 @RequestMapping("/datastructure")
@@ -193,4 +202,104 @@ public class DataStructureController extends BaseController {
 	// request.setAttribute("programid", programid);
 	// return new ModelAndView("/program/maintanance");
 	// }
+
+	// 下载模板
+	@RequestMapping(value = "/downloadModdle")
+	public void downloadModdle(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		String dbType = request.getParameter("dbType");
+		String moddleName = request.getParameter("moddleName");
+
+		String fileName = "";
+		String filePath = "";
+		if ("tableStructrueModdle".equals(moddleName)) {
+			fileName += dbType + "_tableStructrueModdle.XLSX";
+			filePath += "moddle/" + fileName;
+		}
+
+		ClassPathResource resource = new ClassPathResource(filePath);
+		// File file = ClassPathResource.getFile("classpath:" + fileName);
+		InputStream inputStream = resource.getInputStream();
+
+		// 设置文件路径
+		// response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
+		response.setHeader("content-type", "application/octet-stream");
+		byte[] buffer = new byte[1024];
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(inputStream);
+			OutputStream os = response.getOutputStream();
+			int i = bis.read(buffer);
+			while (i != -1) {
+				os.write(buffer, 0, i);
+				i = bis.read(buffer);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (bis != null) {
+				try {
+					bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	// 上传表结构文档
+	@RequestMapping(value = "/submitDataStructure")
+	public void submitDataStructure(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		String programid = request.getParameter("programid");
+		if (file.isEmpty()) {
+			// return "上传失败，请选择文件";
+			System.out.println("未选择文件");
+		}
+		InputStream inputStream = file.getInputStream();
+
+		try {
+			// 获取表结构
+			List<Table> tableList = ExcelUtil.getTableListFromExcelInputStream(inputStream);
+			// 添加表架构
+			dataStructureService.addDataStructureByExcel(programid, tableList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseJson_err(response, "报错");
+			return;
+		}
+
+		responseJson_ok(response);
+	}
+
+	// 删除表
+	@RequestMapping(value = "/deleteTable")
+	public void deleteTable(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		String programidStr = request.getParameter("programid");
+		String tableidStr = request.getParameter("tableid");
+
+		Integer programid = Integer.parseInt(programidStr);
+		Integer tableid = Integer.parseInt(tableidStr);
+
+		try {
+			dataStructureService.deleteTable(programid, tableid);
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseJson_err(response, "报错");
+			return;
+		}
+
+		responseJson_ok(response);
+	}
+
 }

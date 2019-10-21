@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.SnapShortMapper">
+
+	<!-- 快照列表 -->
+	<select id="snapshortList" resultType="com.kimmy.easycreate.po.SnapShort">
+	SELECT
+		s.*
+	FROM snap_short s
+		JOIN line_short_relation r ON s.id = r.snap_short_id
+	WHERE
+		r.line_id = #{businessLineId} and s.snap_Type = #{snapType}
+	</select>
+	
+	<!-- 添加快照 -->
+	<insert id="addSnapshort" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+	INSERT INTO snap_short (
+		snap_Short_Name,
+		snap_type,
+		create_By,
+		create_Date
+	)
+	VALUES
+		(#{snapShort.snapShortName},
+		#{snapShort.snapType},
+		#{snapShort.createBy},
+		NOW()
+		)
+	</insert>
+	
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.InterfaceLineRelationMapper">
+
+	<!-- 添加接口 -->
+	<insert id="addInterfaceLineRelation">
+	INSERT INTO interface_line_relation (
+		business_line_id,
+		interface_id,
+		create_by,
+		create_date
+	)
+	VALUES
+		(
+			#{query.businessLineId},
+			#{query.id},
+			#{query.createBy},
+			NOW()
+		)
+	</insert>
+
+</mapper>

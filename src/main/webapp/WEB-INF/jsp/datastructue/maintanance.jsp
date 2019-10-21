@@ -10,6 +10,12 @@
 	//var programid = ${programid};
 	var programid = ${programid};
 </script>
+<style type="text/css">
+body {
+	/* background: url(/static/pic/雪2.gif) top center no-repeat; */
+	background-size: cover;
+}
+</style>
 </head>
 <body>
 	项目编码:${programid}
@@ -22,12 +28,18 @@
  	-->
 
 	<br> 表结构列表:
-	<div id="tableListDiv"></div>
+	<div id="tableListArea">
+		<div id="tableListHeadOperation">
+			<label id="expand" style="background: #BBB">+ 全部展开</label> <label id="exclose" style="background: #BBB">- 全部收起</label>
+		</div>
+		<div id="tableListDiv"></div>
+	</div>
 
 	<div id="tableCreateArea">
 		<br>
 		<input type="button" onclick="addTableStructure(this)" value="添加表">
 		<input type="button" onclick="submitTableAdd()" value="提交表添加">
+		<input type="button" onclick="addTableStructureByModdle()" value="按照模板导入表结构">
 	</div>
 	<div id="createMudleDiv">
 		<div id="tableCreateMudleDiv" style="display: none">
@@ -57,8 +69,32 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="moddle" style="display: none">
+		<div name="tableDiv"></div>
+	</div>
+
+	<jsp:include page="masking.jsp" />
 </body>
 
+<!-- 按照模板导入表结构 -->
+<script type="text/javascript">
+	function addTableStructureByModdle() {
+		showMaskDiv();
+	}
+</script>
+
+<!-- 表结构展开闭合 -->
+<script type="text/javascript">
+	function extendCloseTable() {
+		$('#expand').click(function() {
+			$('#tableListDiv').find('[name=tableDiv]').find('table').show();
+		})
+		$('#exclose').click(function() {
+			$('#tableListDiv').find('[name=tableDiv]').find('table').hide();
+		})
+	}
+</script>
 <!-- 表结构展示 -->
 <script type="text/javascript">
 	function programTables() {
@@ -80,17 +116,54 @@
 				var tableid = table.id;
 				var tableName = table.tableName;
 
-				var tableNode = document.createElement("table");
+				var tableDivNode = document.createElement("div");
+				$(tableDivNode).attr('name', 'tableDiv');
 
-				var theadNode = document.createElement("thead");
-				var theadTrNode = document.createElement("tr");
-				var theadTdNode = document.createElement("td");
-				$(theadTdNode).attr('colspan', 7);
-				$(theadTdNode).append('表ID:' + tableid + ', 表名:' + tableName);
-				$(theadTrNode).append($(theadTdNode));
-				$(theadNode).append($(theadTrNode));
-				$(tableNode).append($(theadNode));
-				
+				var tableMessageNode = document.createElement("div");
+				$(tableMessageNode).append('表ID:' + tableid + ', 表名:' + tableName);
+				var expandNode = document.createElement("lable");
+				var excloseNode = document.createElement("lable");
+				var deleteNode = document.createElement("lable");
+				$(expandNode).attr('name', 'expand');
+				$(excloseNode).attr('name', 'exclose');
+				$(expandNode).css('background', '#CCC');
+				$(excloseNode).css('background', '#CCC');
+				$(deleteNode).css('background', 'red');
+				$(expandNode).append('展开');
+				$(excloseNode).append('收起');
+				$(deleteNode).append('删除');
+				$(expandNode).click(function() {
+					$(this).parent().parent().find('table').show();
+				})
+				$(excloseNode).click(function() {
+					$(this).parent().parent().find('table').hide();
+				})
+				$(deleteNode).click(function() {
+					var deleteTableUrl = webRoot + '/datastructure/deleteTable'
+					$.post(deleteTableUrl, {
+						programid : programid,
+						tableid : tableid
+					}, function(data) {
+						var code = data.code;
+						if (200 != code) {
+							var message = data.message;
+							alert(message);
+							return;
+						}
+
+						$('#tableListDiv').empty();
+						init();
+					}, 'json')
+				})
+				$(tableMessageNode).append('&nbsp;');
+				$(tableMessageNode).append($(expandNode));
+				$(tableMessageNode).append('&nbsp;');
+				$(tableMessageNode).append($(excloseNode));
+				$(tableMessageNode).append('&nbsp;');
+				$(tableMessageNode).append($(deleteNode));
+				$(tableDivNode).append(tableMessageNode);
+
+				var tableNode = document.createElement("table");
 
 				var fieldList = table.fieldList;
 				for (var j = 0; j < fieldList.length; j++) {
@@ -136,6 +209,14 @@
 					$(createDateNode).val(createDate);
 					$(updateDateNode).val(updateDate);
 
+					$(fieldNameNode).attr('disabled', 'true');
+					$(fieldCommentNode).attr('disabled', 'true');
+					$(fieldTypeNode).attr('disabled', 'true');
+					$(fieldLengthNode).attr('disabled', 'true');
+					$(lengthAfterPointNode).attr('disabled', 'true');
+					$(createDateNode).attr('disabled', 'true');
+					$(updateDateNode).attr('disabled', 'true');
+
 					$(trNode).append($(fieldidNode));
 					$(trNode).append($(fieldNameNode));
 					$(trNode).append($(fieldCommentNode));
@@ -146,9 +227,10 @@
 					$(trNode).append($(updateDateNode));
 
 					$(tableNode).append($(trNode));
+					$(tableDivNode).append(tableNode);
 				}
 
-				$(tableNodeList).append($(tableNode));
+				$(tableNodeList).append($(tableDivNode));
 			}
 		}, 'json')
 	}
@@ -248,8 +330,13 @@
 </script>
 <script type="text/javascript">
 	$(function() {
+		init();
+	})
+	function init() {
 		//展示项目表列表
 		programTables();
-	})
+		//启用表结构展开闭合
+		extendCloseTable();
+	}
 </script>
 </html>

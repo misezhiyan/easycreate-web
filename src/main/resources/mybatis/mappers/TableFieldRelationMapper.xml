@@ -17,5 +17,10 @@
 		(#{id}, #{item.id}, #{item.createBy}, now(), #{item.updateBy}, NOW())
 	</foreach>
 	</insert>
+	
+	<!-- 删除表 -->
+	<delete id="deleteTable">
+	delete from table_field_relation where table_id = #{tableid}
+	</delete>
 
 </mapper>

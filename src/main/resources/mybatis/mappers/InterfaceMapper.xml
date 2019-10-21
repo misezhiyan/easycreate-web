@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.InterfaceMapper">
+
+	<!-- 接口列表 -->
+	<select id="interfaceList" resultType="com.kimmy.easycreate.po.Interface">
+	SELECT
+		f.*
+	FROM
+		interface_line_relation r
+	JOIN interface f ON r.business_line_id = f.id
+	WHERE
+		r.business_line_id = #{query.id}
+	</select>
+	
+	<!-- 添加接口 -->
+	<insert id="addInterface" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+	INSERT INTO interface (
+		interface_name,
+		create_by,
+		create_date
+	)
+	VALUES
+		(
+			#{query.interfaceName},
+			#{query.createBy},
+			NOW()
+		)
+	</insert>
+	
+</mapper>

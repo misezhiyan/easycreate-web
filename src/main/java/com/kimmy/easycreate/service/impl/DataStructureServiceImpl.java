@@ -13,6 +13,7 @@ import com.kimmy.easycreate.dao.TableFieldRelationMapper;
 import com.kimmy.easycreate.dao.TableMapper;
 import com.kimmy.easycreate.etity.query.ProgramFieldsQuery;
 import com.kimmy.easycreate.etity.result.FieldResult;
+import com.kimmy.easycreate.etity.result.TableFieldRelationWithField;
 import com.kimmy.easycreate.etity.result.TableResult;
 import com.kimmy.easycreate.po.Field;
 import com.kimmy.easycreate.po.ProgramFieldRelation;
@@ -124,6 +125,56 @@ public class DataStructureServiceImpl implements DataStructureService {
 		List<TableResult> programTables = tableMapper.programTables(programid);
 
 		return programTables;
+	}
+
+	// 添加表, 字段
+	@Override
+	public void addDataStructureByExcel(String programid, List<Table> tableList) {
+
+		for (Table table : tableList) {
+			List<TableFieldRelationWithField> tfrList = table.getTfrList();
+
+			// 引用列表
+			List<Field> refList = new ArrayList<Field>();
+			// 新增列表
+			List<Field> addList = new ArrayList<Field>();
+
+			for (TableFieldRelationWithField tfr : tfrList) {
+				Integer fieldRef = tfr.getFieldRef();
+				if (null != fieldRef) {
+					tfr.setId(fieldRef);
+					refList.add(tfr);
+				} else {
+					addList.add(tfr);
+				}
+			}
+
+			// 1.添加表
+			// 2.添加字段
+			// 3.添加表字段关系
+			// 4.添加项目, 表关系
+
+			// 1.添加表
+			tableMapper.addTable(table);
+			// 2.添加字段
+			fieldMapper.addFields(addList);
+			// 3.添加表字段关系
+			addList.addAll(refList);
+			table.setFieldList(addList);
+			int addTFRelationOneTable = tableFieldRelationMapper.addTFRelationOneTable(table);
+			// 4.添加项目, 表关系
+			int addPTRelationOneTable = programTableRelationMapper.addPTRelationOneTable(programid, table);
+
+		}
+	}
+
+	@Override
+	public void deleteTable(Integer programid, Integer tableid) {
+		// 1.删除表
+		// 2.删除相关关联
+		tableMapper.deleteTable(tableid);
+		programTableRelationMapper.deleteTable(tableid);
+		tableFieldRelationMapper.deleteTable(tableid);
 	}
 
 }

@@ -27,4 +27,7 @@ public interface TableMapper {
 	// 项目表结构
 	List<TableResult> programTables(@Param("programid") String programid);
 
+	// 删除表
+	int deleteTable(@Param("tableid") Integer tableid);
+
 }

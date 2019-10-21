@@ -16,4 +16,9 @@
 		(#{programid}, #{table.id}, #{table.createBy}, now(), #{table.updateBy}, NOW())
 	</insert>
 
+	<!-- 删除表 -->
+	<delete id="deleteTable">
+	delete from program_table_relation where table_id = #{tableid}
+	</delete>
+	
 </mapper>

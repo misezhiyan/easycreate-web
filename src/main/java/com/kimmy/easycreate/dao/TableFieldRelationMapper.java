@@ -10,4 +10,7 @@ public interface TableFieldRelationMapper {
 	// 添加表与字段关联
 	int addTFRelationOneTable(Table table);
 
+	// 删除表
+	int deleteTable(Integer tableid);
+
 }

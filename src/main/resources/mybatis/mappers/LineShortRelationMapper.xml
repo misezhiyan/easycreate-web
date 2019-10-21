@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kimmy.easycreate.dao.LineShortRelationMapper">
+
+	<!-- 添加业务线快照关系 -->
+	<insert id="addLineShort">
+	INSERT INTO line_short_relation (
+		line_id,
+		snap_short_id,
+		create_by,
+		create_date
+	)
+	VALUES
+		(
+			#{lineShortRelation.lineId},
+			#{lineShortRelation.snapShortId},
+			#{lineShortRelation.createBy},
+			NOW()
+		)
+	</insert>
+	
+</mapper>

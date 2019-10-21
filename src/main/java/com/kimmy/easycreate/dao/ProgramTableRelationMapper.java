@@ -11,4 +11,7 @@ public interface ProgramTableRelationMapper {
 	// 添加项目与表关联
 	int addPTRelationOneTable(@Param("programid") String programid, @Param("table") Table table);
 
+	// 删除表
+	int deleteTable(@Param("tableid") Integer tableid);
+
 }

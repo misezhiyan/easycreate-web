@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 
 public class BaseController {
 
-	private JSONObject responseJson = new JSONObject();
+	private JSONObject responseJson;
 	public static String SUCCESS_CODE = "200";
 	public static String FAILD_CODE = "500";
 	public static String SUCCESS_MESSAGE = "OK";
@@ -32,21 +32,26 @@ public class BaseController {
 		}
 	}
 
-	protected void responseJson_ok(HttpServletResponse response, Object jsonObj) {
+	protected void responseJson_ok(HttpServletResponse response, Object obj) {
+
+		responseJson = new JSONObject();
 
 		responseJson.put("code", SUCCESS_CODE);
 		responseJson.put("message", SUCCESS_MESSAGE);
-		responseJson.put("result", jsonObj);
+		responseJson.put("result", obj);
 
 		responseJson(response, responseJson);
 	}
 
 	protected void responseJson_ok(HttpServletResponse response) {
 
+		responseJson = new JSONObject();
 		responseJson_ok(response, null);
 	}
 
 	protected void responseJson_err(HttpServletResponse response, String errMessage) {
+
+		responseJson = new JSONObject();
 
 		responseJson.put("code", FAILD_CODE);
 		responseJson.put("message", errMessage);
