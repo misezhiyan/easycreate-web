@@ -11,7 +11,7 @@ import com.kimmy.easycreate.po.SnapShort;
 public interface SnapShortMapper {
 
 	// 快照列表
-	List<SnapShort> snapshortList(@Param("businessLineId") String businessLineId, @Param("snapType") String snapType);
+	List<SnapShort> snapshortList(@Param("businessLineId") String businessLineId);
 
 	// 添加快照
 	int addSnapshort(@Param("snapShort") SnapShort snapShort);

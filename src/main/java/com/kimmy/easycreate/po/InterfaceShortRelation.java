@@ -19,6 +19,8 @@ public class InterfaceShortRelation implements Serializable {
 	private Integer interfaceId;
 	// 快照ID
 	private Integer snapShortId;
+	// 快照类型 IN/入照 OUT/出照
+	private String snapType;
 	// 创建人
 	private Integer createBy;
 	// 创建时间
@@ -50,6 +52,14 @@ public class InterfaceShortRelation implements Serializable {
 
 	public void setSnapShortId(Integer snapShortId) {
 		this.snapShortId = snapShortId;
+	}
+
+	public String getSnapType() {
+		return snapType;
+	}
+
+	public void setSnapType(String snapType) {
+		this.snapType = snapType;
 	}
 
 	public Integer getCreateBy() {

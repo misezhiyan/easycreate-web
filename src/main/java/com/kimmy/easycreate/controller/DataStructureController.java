@@ -214,7 +214,7 @@ public class DataStructureController extends BaseController {
 		String filePath = "";
 		if ("tableStructrueModdle".equals(moddleName)) {
 			fileName += dbType + "_tableStructrueModdle.XLSX";
-			filePath += "moddle/" + fileName;
+			filePath += "model/" + fileName;
 		}
 
 		ClassPathResource resource = new ClassPathResource(filePath);

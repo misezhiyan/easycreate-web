@@ -12,5 +12,26 @@
 		WHERE
 			snap_short_id = #{query.snapShortId}
 	</select>
+	
+	<!-- 快照关联接口 -->
+	<insert id="snapsortRefInterface">
+		INSERT INTO interface_short_relation (
+			interface_id,
+			snap_short_id,
+			snap_type,
+			create_by,
+			create_date
+		)
+		<foreach collection="query.interfaceList" item="item">
+		VALUES
+			(
+				#{item.id},
+				#{query.snapShortId},
+				#{query.snapType},
+				#{query.createBy},
+				sysdate
+			)
+		</foreach>
+	</insert>
 
 </mapper>

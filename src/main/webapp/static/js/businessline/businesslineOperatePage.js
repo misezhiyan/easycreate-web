@@ -100,19 +100,16 @@ function hideHead(button) {
 function getOptObjList(optObj) {
 
 	var optObjListUrl = webRoot;
-	if (optObj == 'snapshortin')
-		optObjListUrl += '/snapshort/snapshortinList';
+	if (optObj == 'snapshort')
+		optObjListUrl += '/snapshort/snapshortList';
 	else if (optObj == 'interface')
 		optObjListUrl += '/interface/interfaceList';
-	else if (optObj == 'snapshortout')
-		optObjListUrl += '/snapshort/snapshortoutList';
 
 	var list;
 	$.ajaxSettings.async = false;
 	$.post(optObjListUrl, {
 		businessLineId : businessLineId
 	}, function(data) {
-		console.log(data)
 		var code = data.code;
 		if (200 == code) {
 			list = data.result;
@@ -129,9 +126,9 @@ function matchOptListNode(optObj, list) {
 	var listTableModle = listTableModle || $('[name=listTableModle]')[0].innerHTML;
 	var listBodyNode = $(listTableModle);
 
-	if (optObj == 'snapshortin') {
+	if (optObj == 'snapshort') {
 
-		var snapShortInModdle = snapShortInModdle || $('#modle').find('[name=javaLogicModle]').find('[name=snapshortinModle]').find('[name=snapshortListTable]').find('tbody')[0].innerHTML;
+		var snapshortModle = snapshortModle || $('#modle').find('[name=javaLogicModle]').find('[name=snapshortModle]').find('[name=snapshortListTable]').find('tbody')[0].innerHTML;
 
 		for (var i = 0; i < list.length; i++) {
 			var snapShort = list[i];
@@ -141,35 +138,34 @@ function matchOptListNode(optObj, list) {
 			var snapType = snapShort.snapType;
 			var createDate = snapShort.createDate;
 
-			var snapShortInNode = $(snapShortInModdle);
+			var snapshortModle = $(snapshortModle);
 
-			$(snapShortInNode).find('[name=snapShortId]').val(snapShortId);
-			$(snapShortInNode).find('[name=snapShortName]').val(snapShortName);
-			$(snapShortInNode).find('[name=snapType]').val(snapType);
-			$(snapShortInNode).find('[name=createDate]').val(createDate);
-			$(snapShortInNode).find('[name=refInterfaceButton]').click(function() {
+			$(snapshortModle).find('[name=snapShortId]').val(snapShortId);
+			$(snapshortModle).find('[name=snapShortName]').val(snapShortName);
+			$(snapshortModle).find('[name=snapType]').val(snapType);
+			$(snapshortModle).find('[name=createDate]').val(createDate);
+			$(snapshortModle).find('[name=refInterfaceButton]').click(function() {
 				var thisSnapShortId = $(this).parent().parent().prev().find('[name=snapShortId]').val();
 				var optAreaName = getOptAreaName(this);
 				var nextOptAreaName = getNextOptAreaName(optAreaName);
 
 				var interfaceList = getInterfaceListBySnapShortId(thisSnapShortId);
-				console.log(interfaceList);
 				var interfaceListNode = matchInterfaceListNode(thisSnapShortId, interfaceList);
 
 				cleanOpreateArea(nextOptAreaName);
 				opreateAreaAppend(nextOptAreaName, interfaceListNode);
 			})
 
-			$(snapShortInNode).each(function() {
+			$(snapshortModle).each(function() {
 				if (undefined != $(this).attr('snapShortId')) {
 					$(this).attr("snapShortId", snapShortId);
 				}
 			})
-			$(snapShortInNode).find('[snapShortId]').attr("snapShortId", snapShortId);
-			$(listBodyNode).append($(snapShortInNode));
+			$(snapshortModle).find('[snapShortId]').attr("snapShortId", snapShortId);
+			$(listBodyNode).append($(snapshortModle));
 		}
 
-		operateObj.opt1.obj = 'snapshortin';
+		operateObj.opt1.obj = 'snapshort';
 
 	} else if (optObj == 'interface') {
 
@@ -178,18 +174,21 @@ function matchOptListNode(optObj, list) {
 
 			var interfaceI = list[i];
 
+			var createDate = interfaceI.createDate;
+			var interfaceId = interfaceI.id;
+			var interfaceName = interfaceI.interfaceName;
+
 			var interfaceNode = $(interfaceModle);
+
+			$(interfaceNode).find('[name=interfaceId]').val(interfaceId);
+			$(interfaceNode).find('[name=interfaceName]').val(interfaceName);
+			$(interfaceNode).find('[name=createDate]').val(createDate);
 
 			$(listBodyNode).append($(interfaceNode));
 		}
 
 		operateObj.opt1.obj = 'interface';
 
-	} else if (optObj == 'snapshortout') {
-
-		alert('snapshortout');
-
-		operateObj.opt1.obj = 'snapshortout';
 	}
 
 	return listBodyNode;
@@ -204,14 +203,13 @@ function getInterfaceListBySnapShortId(snapShortId) {
 	$.post(interfaceListUrl, {
 		snapShortId : snapShortId
 	}, function(data) {
-		console.log(data);
 		var code = data.code;
 		if (200 == code) {
 			return data.result;
 		} else {
 			alert(data.message);
 		}
-	})
+	}, 'json')
 	$.ajaxSettings.async = true;
 }
 function matchInterfaceListNode(snapShortId, interfaceList) {
@@ -223,7 +221,6 @@ function matchInterfaceListNode(snapShortId, interfaceList) {
 
 	$(matchInterfaceListNode).append($(optSnapshortidNode));
 	$(matchInterfaceListNode).find('[name=optId]').val(snapShortId);
-	console.log($(matchInterfaceListNode).outerHTML)
 
 	if (interfaceList) {
 		for (var i = 0; i < interfaceList.length; i++) {
@@ -246,23 +243,21 @@ function matchInterfaceListNode(snapShortId, interfaceList) {
 
 // 获取创建区
 function getCreateNode(optObj) {
-	if ('snapshortin' == optObj) {
-		var snapshortinModle = snapshortinModle || $('[name=snapshortinModle]').find('[name=createSnapshortin]')[0].outerHTML;
-		var snapshortinNode = $(snapshortinModle);
-		return snapshortinNode;
+	if ('snapshort' == optObj) {
+		var snapshortModle = snapshortModle || $('[name=snapshortModle]').find('[name=createSnapshort]')[0].outerHTML;
+		var snapshortNode = $(snapshortModle);
+		return snapshortNode;
 	} else if (optObj == 'interface') {
 		var interfaceModle = interfaceModle || $('[name=interfaceModle]').find('[name=createInterface]')[0].outerHTML;
 		var interfaceNode = $(interfaceModle);
 		return interfaceNode;
-	} else if (optObj == 'snapshortout') {
-
 	}
 }
 
 // 展示创建入照区域
-function showCreateSnapshortinArea(button) {
-	var snapshortinAddDiv = $(button).parent().find('[name=snapshortinAddDiv]');
-	$(snapshortinAddDiv).show();
+function showCreateSnapshortArea(button) {
+	var snapshortAddDiv = $(button).parent().find('[name=snapshortAddDiv]');
+	$(snapshortAddDiv).show();
 }
 // 展示创建接口区域
 function showInterfaceArea(button) {
@@ -270,33 +265,77 @@ function showInterfaceArea(button) {
 	$(interfaceAddDiv).show();
 }
 
-// 展示行操作区
-function showSnapShortInOperateArea(button) {
-	var snapShortInOperateArea = $(button).parent().parent().next();
-	var visible = snapShortInOperateArea.is(':visible');
+// 展示入照行操作区
+function showSnapshortOperateArea(button) {
+	var snapShortOperateArea = $(button).parent().parent().next();
+	var visible = snapShortOperateArea.is(':visible');
 	if (visible)
-		$(snapShortInOperateArea).hide();
+		$(snapShortOperateArea).hide();
 	else
-		$(snapShortInOperateArea).show();
+		$(snapShortOperateArea).show();
+}
+// 展示接口行操作区
+function showInterfaceOperateArea(button) {
+	var interfaceOperateArea = $(button).parent().parent().next();
+	var visible = interfaceOperateArea.is(':visible');
+	if (visible)
+		$(interfaceOperateArea).hide();
+	else
+		$(interfaceOperateArea).show();
 }
 
 // 展示可关联接口
 function showInterfaceToRef(button, type) {
 	var snapshortid = $(button).parent().parent().find('[name=optId]').val();
-	alert(snapshortid);
+	var interfaceList = getOptObjList('interface');
+	var refNewIntefaceListAreaNode = matchRefNewIntefaceListAreaNode(interfaceList);
+	opreateAreaAppend('opt3', $(refNewIntefaceListAreaNode));
+}
+function matchRefNewIntefaceListAreaNode(interfaceList) {
+
+	var refNewIntefaceListAreaModel = refNewIntefaceListAreaModel || $('[name=refNewIntefaceListAreaModel]').find('table')[0].outerHTML;
+
+	var refNewIntefaceListAreaNode = $(refNewIntefaceListAreaModel);
+	var refNewIntefaceListAreaTheadNode = $(refNewIntefaceListAreaNode).find('thead');
+	var refNewIntefaceListAreaTbodyNode = $(refNewIntefaceListAreaNode).find('tbody');
+
+	var refNewIntefaceListAreaRowModel = $(refNewIntefaceListAreaTbodyNode).find('tr')[0].outerHTML;
+	$(refNewIntefaceListAreaTbodyNode).empty();
+	for (var i = 0; i < interfaceList.length; i++) {
+		var interfaceI = interfaceList[i];
+		var interfaceId = interfaceI.id;
+		var interfaceName = interfaceI.interfaceName;
+		var createDate = interfaceI.createDate;
+
+		var refNewIntefaceListAreaRowNode = $(refNewIntefaceListAreaRowModel);
+
+		$(refNewIntefaceListAreaRowNode).find('[name=interfaceId]').val(interfaceId);
+		$(refNewIntefaceListAreaRowNode).find('[name=interfaceName]').val(interfaceName);
+		$(refNewIntefaceListAreaRowNode).find('[name=createDate]').val(createDate);
+
+		var interfaceIdRefRadio = $(refNewIntefaceListAreaRowNode).find('[name=interfaceIdRef]');
+		$(interfaceIdRefRadio).val(interfaceId);
+		// $(interfaceIdRefRadio).onclick(function() {
+		// alert($(this).val());
+		// })
+
+		$(refNewIntefaceListAreaTbodyNode).append($(refNewIntefaceListAreaRowNode));
+	}
+
+	return refNewIntefaceListAreaNode;
 }
 
 // 创建入照
-function addSnapshortin() {
-	var snapshortName = $('[name=snapshortinAddDiv]').find('[name=snapshortName]').val();
-	var addSnapshortinUrl = webRoot + "/snapshort/addSnapshortin";
-	$.post(addSnapshortinUrl, {
+function addSnapshort() {
+	var snapshortName = $('[name=snapshortAddDiv]').find('[name=snapshortName]').val();
+	var addSnapshortUrl = webRoot + "/snapshort/addSnapshort";
+	$.post(addSnapshortUrl, {
 		businessLineId : businessLineId,
 		snapshortName : snapshortName
 	}, function(data) {
 		var code = data.code;
 		if (200 == code) {
-			$('[name=optObj]').find('[value=snapshortin]').click();
+			$('[name=optObj]').find('[value=snapshort]').click();
 		} else {
 			alert(data.message);
 		}
@@ -315,6 +354,31 @@ function addInterface() {
 			$('[name=optObj]').find('[value=interface]').click();
 		} else {
 			alert(data.message);
+		}
+	}, 'json');
+}
+// 快照关联接口
+function snapsortRefInterface() {
+	var snapshortId = $('[name=optId]').val();
+	var interfaceIdList = [];
+	$('#snapshortRefInterfaceTable').find('[name=interfaceIdRef]').each(function() {
+		var checked = $(this).is(':checked');
+		if (checked) {
+			interfaceIdList.push($(this).val());
+		}
+	})
+	console.log(interfaceIdList);
+	var snapsortRefInterfaceUrl = webRoot + "/snapshort/snapsortRefInterface";
+	$.post(snapsortRefInterfaceUrl, {
+		snapshortId : snapshortId,
+		interfaceIdListStr : JSON.stringify(interfaceIdList),
+		interfaceIdList : interfaceIdList
+	}, function(data) {
+		var code = data.code;
+		if (200 == code) {
+			// $('[name=optObj]').find('[value=interface]').click();
+		} else {
+			// alert(data.message);
 		}
 	}, 'json');
 }

@@ -1,5 +1,8 @@
 package com.kimmy.easycreate.etity.query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.kimmy.easycreate.po.Interface;
 
 /**
@@ -15,6 +18,9 @@ public class InterfaceSnapshortQuery extends Interface {
 	private String snapShortName;
 	// 快照类型 IN/入照 OUT/出照
 	private String snapType;
+
+	// 接口列表
+	private List<Interface> interfaceList;
 
 	public Integer getSnapShortId() {
 		return snapShortId;
@@ -40,4 +46,19 @@ public class InterfaceSnapshortQuery extends Interface {
 		this.snapType = snapType;
 	}
 
+	public List<Interface> getInterfaceList() {
+		return interfaceList;
+	}
+
+	public void setInterfaceList(List<Interface> interfaceList) {
+		this.interfaceList = interfaceList;
+	}
+
+	/*************************************************************************/
+
+	public void addInterface(Interface interfaceT) {
+		if (null == interfaceList)
+			interfaceList = new ArrayList<Interface>();
+		interfaceList.add(interfaceT);
+	}
 }

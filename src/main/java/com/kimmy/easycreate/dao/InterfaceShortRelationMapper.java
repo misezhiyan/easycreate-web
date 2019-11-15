@@ -14,4 +14,7 @@ public interface InterfaceShortRelationMapper {
 	// 接口列表
 	List<Interface> interfaceListBySnapshortid(@Param("query") InterfaceSnapshortQuery query);
 
+	// 快照关联接口
+	int snapsortRefInterface(@Param("query") InterfaceSnapshortQuery query);
+
 }

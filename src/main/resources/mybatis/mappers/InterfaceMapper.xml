@@ -8,7 +8,7 @@
 		f.*
 	FROM
 		interface_line_relation r
-	JOIN interface f ON r.business_line_id = f.id
+	JOIN interface f ON r.interface_id = f.id
 	WHERE
 		r.business_line_id = #{query.id}
 	</select>

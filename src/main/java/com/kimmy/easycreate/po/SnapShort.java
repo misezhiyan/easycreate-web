@@ -18,8 +18,6 @@ public class SnapShort implements Serializable {
 	private Integer id;
 	// 快照名称
 	private String snapShortName;
-	// 快照类型 IN/入照 OUT/出照
-	private String snapType;
 	// 创建时间
 	private Date createDate;
 	// 创建人
@@ -43,14 +41,6 @@ public class SnapShort implements Serializable {
 
 	public void setSnapShortName(String snapShortName) {
 		this.snapShortName = snapShortName;
-	}
-
-	public String getSnapType() {
-		return snapType;
-	}
-
-	public void setSnapType(String snapType) {
-		this.snapType = snapType;
 	}
 
 	public Date getCreateDate() {

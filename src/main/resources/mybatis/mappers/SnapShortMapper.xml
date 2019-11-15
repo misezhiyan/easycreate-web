@@ -9,7 +9,7 @@
 	FROM snap_short s
 		JOIN line_short_relation r ON s.id = r.snap_short_id
 	WHERE
-		r.line_id = #{businessLineId} and s.snap_Type = #{snapType}
+		r.line_id = #{businessLineId}
 	</select>
 	
 	<!-- 添加快照 -->
